@@ -6,9 +6,9 @@
 @section('content')
 <h1>这是登录页面</h1>
 @endsection
-
+@include('component.loading')
 @section('my-js')
 <script>
-	alert('这是登录页面???');
+	console.log('这是登录页面???');
 </script>
 @endsection
