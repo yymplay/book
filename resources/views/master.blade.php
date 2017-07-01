@@ -5,7 +5,7 @@
 	<title>@yield('title')</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<link rel="stylesheet" href="/css/weui.css">
-	<link rel="stylesheet" href="/css/book.css">
+	<!-- <link rel="stylesheet" href="/css/book.css"> -->
 </head>
 <body>
 	@yield('content')
