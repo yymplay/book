@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>@yield('title')</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<link rel="stylesheet" href="/css/weui.css">
-	<!-- <link rel="stylesheet" href="/css/book.css"> -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <title>@yield('title')</title>
+  <link rel="stylesheet" href="/css/weui.css">
+  <link rel="stylesheet" href="/css/book.css">
 </head>
 <body>
-	@yield('content')
-	<!-- tooltips -->
+
+<div class="page">
+  @yield('content')
+</div>
+
+<!-- tooltips -->
 <div class="bk_toptips"><span></span></div>
 
 <div id="global_menu" onclick="onMenuClick();">
@@ -31,7 +35,7 @@
         </div>
     </div>
 </div>
-</div>
+
 </body>
 <script src="/js/jquery-1.11.2.min.js"></script>
 <script type="text/javascript">
@@ -75,5 +79,6 @@ function onMenuItemClick(index) {
   }
 }
 </script>
+
 @yield('my-js')
 </html>
