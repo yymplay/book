@@ -35,7 +35,13 @@
         </div>
     </div>
 </div>
-
+<div id="toast" style="">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <i class="weui_icon_toast"></i>
+        <p class="weui_toast_content">已完成</p>
+    </div>
+</div>
 </body>
 <script src="/js/jquery-1.11.2.min.js"></script>
 <script type="text/javascript">
