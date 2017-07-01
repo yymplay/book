@@ -1,4 +1,4 @@
-<div id="loadingToast" class="weui_loading_toast" style="display:none;">
+<div id="loadingToast" class="weui_loading_toast">
     <div class="weui_mask_transparent"></div>
     <div class="weui_toast">
         <div class="weui_loading">
