@@ -24,7 +24,7 @@
           <input class="weui_input" type="number" placeholder="请输入验证码"/>
       </div>
       <div class="weui_cell_ft">
-          <img src="/service/validate_code/create" class="bk_validate_code"/>
+          <img src="/service/validate/create" class="bk_validate_code"/>
       </div>
   </div>
 </div>
@@ -38,5 +38,12 @@
 @section('my-js')
 <script>
 	console.log('这是登录页面???');
+	function onLoginClick(){
+		$(this).src="/service/validate/create?"+Math.random();
+	}
+	$('.bk_validate_code').on('click',function(){
+		this.src="/service/validate/create?"+Math.random();
+	});
+
 </script>
 @endsection

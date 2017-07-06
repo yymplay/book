@@ -7,13 +7,13 @@ use App\Models\M3Result;
 class SendTemplateSMS
 {
   //主帐号
-  private $accountSid='aaf98f8949d575140149dd482efa04b5';
+  private $accountSid='8aaf0708592adca6015943edd5e20ed9';
 
   //主帐号Token
-  private $accountToken='c7a1c3563b1347f4adbe0734f981dac1';
+  private $accountToken='6acf900cc36641068b8b2ef309853d80';
 
   //应用Id
-  private $appId='8a48b55149d5792d0149dd63a3c4046d';
+  private $appId='8aaf0708592adca6015943edd7940ee2';
 
   //请求地址，格式如下，不需要写https://
   private $serverIP='sandboxapp.cloopen.com';

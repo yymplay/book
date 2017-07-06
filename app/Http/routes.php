@@ -11,14 +11,12 @@
 |
 */
 use App\Member;
-Route::get('/', function () {
-    // return view('welcome');
-    return view('login');
-    //return Member::all();
-});
-Route::get('service/validate/create2', function () {
-    // return view('welcome');
-    return view('login');
-    //return Member::all();
-});
+// Route::get('/login', function () {
+//     // return view('welcome');
+//     return view('login');
+//     //return Member::all();
+// });
+Route::get('/login', 'View\MemberController@tologin');
+Route::get('/register', 'View\MemberController@toRegister');
 Route::get('service/validate/create','Service\ValidateController@create');
+Route::get('service/validate/send','Service\ValidateController@sendSMS');
