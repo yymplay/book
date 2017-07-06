@@ -16,3 +16,9 @@ Route::get('/', function () {
     return view('login');
     //return Member::all();
 });
+Route::get('service/validate/create2', function () {
+    // return view('welcome');
+    return view('login');
+    //return Member::all();
+});
+Route::get('service/validate/create','Service\ValidateController@create');

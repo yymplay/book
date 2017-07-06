@@ -35,13 +35,7 @@
         </div>
     </div>
 </div>
-<div id="toast" style="">
-    <div class="weui_mask_transparent"></div>
-    <div class="weui_toast">
-        <i class="weui_icon_toast"></i>
-        <p class="weui_toast_content">已完成</p>
-    </div>
-</div>
+
 </body>
 <script src="/js/jquery-1.11.2.min.js"></script>
 <script type="text/javascript">
@@ -73,9 +67,9 @@ function onMenuItemClick(index) {
   var weuiActionsheet = $('#weui_actionsheet');
   hideActionSheet(weuiActionsheet, mask);
   if(index == 1) {
-
+  	window.location.href="http://www.baidu.com";
   } else if(index == 2) {
-
+  	window.location.href="http://www.taobao.com";
   } else if(index == 3){
 
   } else {
