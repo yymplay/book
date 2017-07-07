@@ -21,17 +21,26 @@ class ValidateController extends Controller{
 	public function sendSMS(Request $request){
 		$M3Result=new M3Result;
 		$phone=$request->input('phone');
-		
+		$this->validate($request, 
+		[
+    				'phone' => 'required|digits:11',
+		],[
+			'required'=>":attribute 是必填项",
+			'digits'=>":attribute 超过规定范围",
+		],[
+			'phone'=>'手机号',
+		]);
+
 		$sendTemplateSMS = new SendTemplateSMS();
 		$code=rand(000000,999999);
-		$rst=$sendTemplateSMS ->sendTemplateSMS('17301393271',[$code,60],1);
-		var_dump($rst);
+		$M3Result=$sendTemplateSMS ->sendTemplateSMS($phone,[$code,60],1);
+		// var_dump($rst);
 		$tempPhone= new TempPhone;
 		$tempPhone->phone=$phone;
 		$tempPhone->code=$code;
-		$tempPhone->phone=date('Y-m-d H:i:s',$time()+60*60);
-		$tempPhone->save;
-
+		$tempPhone->deadline=date('Y-m-d H:i:s',time()+60*60);
+		$tempPhone->save();
+		return $M3Result->toJson();
 		
 
 	}

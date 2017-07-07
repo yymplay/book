@@ -20,3 +20,4 @@ Route::get('/login', 'View\MemberController@tologin');
 Route::get('/register', 'View\MemberController@toRegister');
 Route::get('service/validate/create','Service\ValidateController@create');
 Route::get('service/validate/send','Service\ValidateController@sendSMS');
+Route::any('service/register','Service\MemberController@register');
