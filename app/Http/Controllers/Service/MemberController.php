@@ -122,7 +122,7 @@ class MemberController extends Controller{
       });
 
       $m3_result->status = 0;
-      $m3_result->message = '邮件发送成功,请于24小时点击该链接完成验证';
+      $m3_result->message = '邮件发送成功,请于24小时登录邮箱完成验证';
       return $m3_result->toJson();
     }
 		
