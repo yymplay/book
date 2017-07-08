@@ -218,6 +218,7 @@ $('input:radio[name=register_type]').each(function(index,el){
                     $('.bk_toptips').show();
                     $('.bk_toptips span').html(data.message);
                     setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                    setTimeout(function() {window.location.href="/login";}, 2000);
               },
               error:function(xhr,status,error){
                     var info=JSON.parse(xhr.responseText);
