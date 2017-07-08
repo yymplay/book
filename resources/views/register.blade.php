@@ -141,18 +141,23 @@
       cache:false,
       data:{phone:phone},
       success:function(data){
-          if(data!=0){
+            if(data == null) {
+                $('.bk_toptips').show();
+                $('.bk_toptips span').html('服务端错误');
+                setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                return;
+            }
+            if(data.status!=0){
+              $('.bk_toptips').show();
+              $('.bk_toptips span').html(data.message);
+              setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+              return;
+            }
             $('.bk_toptips').show();
-            $('.bk_toptips span').html(data.message);
+            $('.bk_toptips span').html('发送成功');
             setTimeout(function() {$('.bk_toptips').hide();}, 2000);
-            return;
-          }
-          $('.bk_toptips').show();
-          $('.bk_toptips span').html('发送成功');
-          setTimeout(function() {$('.bk_toptips').hide();}, 2000);
       },
       error:function(xhr,status,error){
-            console.log(xhr);
             var info=JSON.parse(xhr.responseText);
             $('.bk_toptips').show();
             $('.bk_toptips span').html(info.phone);
@@ -162,10 +167,71 @@
     });
   });
 </script>
+<script>
+function onRegisterClick(){
+$('input:radio[name=register_type]').each(function(index,el){
+    if($(this).attr('checked')=='checked'){
+        var email='';
+        var phone='';
+        var password='';
+        var confirm='';
+        var phone_code='';
+        var validate_code='';
+        var id=$(this).attr('id');
+        if(id=='x11'){
+              phone=$('input[name=phone]').val();
+              password = $('input[name=passwd_phone]').val();
+              confirm = $('input[name=passwd_phone_cfm]').val();
+              phone_code = $('input[name=phone_code]').val();
+              if(verifyPhone(phone,password,confirm,phone_code)==false){
+                return;
+              }
+        }else if(id=='x12'){
+              email = $('input[name=email]').val();
+              password = $('input[name=passwd_email]').val();
+              confirm = $('input[name=passwd_email_cfm]').val();
+              validate_code = $('input[name=validate_code]').val();
+              if(verifyEmail(email,password,confirm,validate_code)==false){
+                return;
+              }
+        }
+        $.ajax({
+              url:'/service/register',
+              dataType:'json',
+              method:'post',
+              cache:false,
+              data:{phone: phone, email: email, password: password, confirm: confirm,
+                    phone_code: phone_code, validate_code: validate_code, _token: "{{csrf_token()}}"},
+              success:function(data){
+                    if(data == null) {
+                        $('.bk_toptips').show();
+                        $('.bk_toptips span').html('服务端错误');
+                        setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                        return;
+                    }
+                    if(data.status!=0){
+                      $('.bk_toptips').show();
+                      $('.bk_toptips span').html(data.message);
+                      setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                      return;
+                    }
+                    $('.bk_toptips').show();
+                    $('.bk_toptips span').html(data.message);
+                    setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+              },
+              error:function(xhr,status,error){
+                    var info=JSON.parse(xhr.responseText);
+                    $('.bk_toptips').show();
+                    $('.bk_toptips span').html(info.phone);
+                    setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+                    return;
+              }
+        });
+    }
+});    
+}
+</script>
 <script type="text/javascript">
-
-
-
   function verifyPhone(phone, password, confirm, phone_code) {
     // 手机号不为空
     if(phone == '') {
@@ -174,6 +240,10 @@
       setTimeout(function() {$('.bk_toptips').hide();}, 2000);
       return false;
     }
+    console.log(phone);
+    console.log(password);
+    console.log(confirm);
+    console.log(phone_code);
     // 手机号格式
     if(phone.length != 11 || phone[0] != '1') {
       $('.bk_toptips').show();

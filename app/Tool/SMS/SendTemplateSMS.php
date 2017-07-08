@@ -47,8 +47,9 @@ class SendTemplateSMS
            $m3_result->message = 'result error!';
        }
        if($result->statusCode != 0) {
-           $m3_result->status = $result->statusCode[0];
-           $m3_result->message = $result->statusMsg[0];
+           $result = (array)$result;
+           $m3_result->status = $result['statusCode'];
+           $m3_result->message = $result['statusMsg'];
        }else{
            $m3_result->status = 0;
            $m3_result->message = '发送成功';

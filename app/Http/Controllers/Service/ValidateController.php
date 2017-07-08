@@ -14,8 +14,9 @@ use App\Entity\TempPhone;
 use App\Models\M3Result;
 
 class ValidateController extends Controller{
-	public function create($value=''){
+	public function create(Request $request){
 		$validateCode= new ValidateCode;
+		$request->session()->put('validate_code',$validateCode->getCode());
 		return $validateCode->doimg();
 	}
 	public function sendSMS(Request $request){
@@ -34,14 +35,45 @@ class ValidateController extends Controller{
 		$sendTemplateSMS = new SendTemplateSMS();
 		$code=rand(000000,999999);
 		$M3Result=$sendTemplateSMS ->sendTemplateSMS($phone,[$code,60],1);
-		// var_dump($rst);
-		$tempPhone= new TempPhone;
-		$tempPhone->phone=$phone;
-		$tempPhone->code=$code;
-		$tempPhone->deadline=date('Y-m-d H:i:s',time()+60*60);
-		$tempPhone->save();
+		if($M3Result->status==0){
+			$tempPhone=TempPhone::where('phone',$phone)->first();
+			if($tempPhone==null){
+				$tempPhone= new TempPhone;
+			}
+			$tempPhone->phone=$phone;
+			$tempPhone->code=$code;
+			$tempPhone->deadline=date('Y-m-d H:i:s',time()+60*60);
+			$tempPhone->save();
+			
+		}
+		
 		return $M3Result->toJson();
 		
 
+	}
+	public function validateEmail(Request $request){
+		$M3Result=new M3Result;
+		$member_id=$request->input('member_id','')+0;
+		$code=$request->input('code','');
+		if($member_id<=0 || $code==''){
+			return '验证异常';
+		}
+		$tempEmail=TempEmail::where('member_id',$member_id)->first();
+		if($tempEmail==null){
+			return '验证异常';
+		}
+		if($tempEmail->code==$code){
+			if(strtotime($tempEmail->deadline)<time()){
+				return '该链接已失效';
+			}
+			$member=Member::find($member_id);
+			$member->active=1;
+			$member->save();
+			return redirect('/login');
+
+		}else{
+			return '该链接已失效';
+		}
+		
 	}
 }
