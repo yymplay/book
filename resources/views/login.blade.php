@@ -9,19 +9,19 @@
   <div class="weui_cell">
       <div class="weui_cell_hd"><label class="weui_label">帐号</label></div>
       <div class="weui_cell_bd weui_cell_primary">
-          <input class="weui_input" type="tel" placeholder="邮箱或手机号"/>
+          <input class="weui_input" type="tel" placeholder="邮箱或手机号" name="username"/>
       </div>
   </div>
   <div class="weui_cell">
       <div class="weui_cell_hd"><label class="weui_label">密码</label></div>
       <div class="weui_cell_bd weui_cell_primary">
-          <input class="weui_input" type="password" placeholder="不少于6位"/>
+          <input class="weui_input" type="password" placeholder="不少于6位" name="password"/>
       </div>
   </div>
   <div class="weui_cell weui_vcode">
       <div class="weui_cell_hd"><label class="weui_label">验证码</label></div>
       <div class="weui_cell_bd weui_cell_primary">
-          <input class="weui_input" type="number" placeholder="请输入验证码"/>
+          <input class="weui_input" type="text" placeholder="请输入验证码" name="validate_code"/>
       </div>
       <div class="weui_cell_ft">
           <img src="/service/validate/create" class="bk_validate_code"/>
@@ -38,8 +38,86 @@
 @section('my-js')
 <script>
 	console.log('这是登录页面???');
+	$('.bk_title_content').html('登录');
 	function onLoginClick(){
-		$(this).src="/service/validate/create?"+Math.random();
+		//获取账号密码 验证码
+		var username = $('input[name=username]').val();
+	    if(username.length == 0) {
+	      $('.bk_toptips').show();
+	      $('.bk_toptips span').html('帐号不能为空');
+	      setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+	      return;
+	    }
+	    if(username.indexOf('@') == -1) { //手机号
+	      if(username.length != 11 || username[0] != 1) {
+	        $('.bk_toptips').show();
+	        $('.bk_toptips span').html('帐号格式不对!');
+	        setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+	        return;
+	      }
+	    } else {
+	      if(username.indexOf('.') == -1) {
+	        $('.bk_toptips').show();
+	        $('.bk_toptips span').html('帐号格式不对!');
+	        setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+	        return;
+	      }
+	    }
+	    // 密码
+	    var password = $('input[name=password]').val();
+	    if(password.length == 0) {
+	      $('.bk_toptips').show();
+	      $('.bk_toptips span').html('密码不能为空!');
+	      setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+	      return;
+	    }
+	    if(password.length < 6) {
+	      $('.bk_toptips').show();
+	      $('.bk_toptips span').html('密码不能少于6位!');
+	      setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+	      return;
+	    }
+	    // 验证码
+	    var validate_code = $('input[name=validate_code]').val();
+	    if(validate_code.length == 0) {
+	      $('.bk_toptips').show();
+	      $('.bk_toptips span').html('验证码不能为空!');
+	      setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+	      return;
+	    }
+	    if(validate_code.length < 4) {
+	      $('.bk_toptips').show();
+	      $('.bk_toptips span').html('验证码不能少于4位!');
+	      setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+	      return;
+	    }
+	    //发起请求
+	    $.ajax({
+	    	url:'/service/login',
+	    	data:{username:username,password:password,validate_code:validate_code,_token:"{{csrf_token()}}"},
+	    	dataType:'json',
+	    	method:'post',
+	    	success:function (data){
+	    		if(data == null) {
+		          $('.bk_toptips').show();
+		          $('.bk_toptips span').html('服务端错误');
+		          setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+		          return;
+		        }
+		        if(data.status != 0) {
+		          $('.bk_toptips').show();
+		          $('.bk_toptips span').html(data.message);
+		          setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+		          return;
+		        }
+
+		        $('.bk_toptips').show();
+		        $('.bk_toptips span').html('登录成功');
+		        setTimeout(function() {$('.bk_toptips').hide();}, 2000);
+
+		        location.href = "";
+	    	},
+	    });
 	}
 	$('.bk_validate_code').on('click',function(){
 		this.src="/service/validate/create?"+Math.random();

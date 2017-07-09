@@ -55,25 +55,31 @@ class ValidateController extends Controller{
 		$M3Result=new M3Result;
 		$member_id=$request->input('member_id','')+0;
 		$code=$request->input('code','');
+		$info=[];
+		$info['icon']= 'weui_icon_warn';
 		if($member_id<=0 || $code==''){
-			return '验证异常';
+			$info['msg']= '验证异常';
 		}
 		$tempEmail=TempEmail::where('member_id',$member_id)->first();
 		if($tempEmail==null){
-			return '验证异常';
+			$info['msg']= '验证异常';
+			return view('email_result')->with('info',$info);
 		}
 		if($tempEmail->code==$code){
 			if(strtotime($tempEmail->deadline)<time()){
-				return '该链接已失效';
+				$info['msg']= '该链接已失效';
+				
 			}
 			$member=Member::find($member_id);
 			$member->active=1;
 			$member->save();
-			return redirect('/login');
+			$info['msg']= '邮箱已通过验证';
+			$info['icon']= 'weui_icon_success';
 
 		}else{
-			return '该链接已失效';
+			$info['msg']= '该链接已失效';
 		}
+		return view('email_result')->with('info',$info);
 		
 	}
 }

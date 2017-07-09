@@ -102,7 +102,7 @@ class MemberController extends Controller{
       $m3_email->to = $email;
       $m3_email->cc = 'yymplayer@163.com';
       $m3_email->subject = '邮箱验证';
-      $m3_email->content = '请于24小时点击该链接完成验证. http://book.magina.com/service/validate_email'
+      $m3_email->content = '请于24小时点击该链接完成验证. http://test.izhiwo.com/service/validate_email'
                         . '?member_id=' . $member->id
                         . '&code=' . $uuid;
       $tempEmail = tempEmail::where('member_id',$member->id)->first();
@@ -127,5 +127,41 @@ class MemberController extends Controller{
     }
 		
 	}
-
+	public function login(Request $request){
+		$username=$request->get('username','');
+		$password=$request->get('password','');
+		$validate_code=$request->get('validate_code','');
+		$m3_result=new M3Result;
+		if($validate_code!=$request->session()->get('validate_code','')){
+			$m3_result->status=1;
+			$m3_result->message='验证码错误';
+			return $m3_result->toJson();
+		}
+		if(strpos($username, '@') == true) {
+	      $member = Member::where('email', $username)->first();
+	    } else {
+	      $member = Member::where('phone', $username)->first();
+	    }
+	    if($member == null) {
+	      $m3_result->status = 2;
+	      $m3_result->message = '该用户不存在';
+	      return $m3_result->toJson();
+	    } else {  	  
+		      if(md5('bk' + $password) != $member->password) {
+		        $m3_result->status = 3;
+		        $m3_result->message = '密码不正确';
+		        return $m3_result->toJson();
+		      }
+		      if($member->active==0){
+	    	  	 $m3_result->status = 4;
+		         $m3_result->message = '请先登录邮箱激活';
+		         return $m3_result->toJson();
+	    	  }
+	    	  
+	    }
+	    $request->session()->put('member', $member);
+	    $m3_result->status = 0;
+	    $m3_result->message = '登录成功';
+	    return $m3_result->toJson();
+	}
 }

@@ -91,6 +91,7 @@
 
 @section('my-js')
 <script type="text/javascript">
+$('.bk_title_content').html('注册');
   $('#x12').next().hide();
   $('input:radio[name=register_type]').click(function(event) {
     $('input:radio[name=register_type]').attr('checked', false);
