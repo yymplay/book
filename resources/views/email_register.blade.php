@@ -1,1 +1,1 @@
-{{$m3_email->content}}
+{!!$m3_email->content!!}

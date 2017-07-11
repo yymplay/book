@@ -115,7 +115,7 @@
 		        $('.bk_toptips span').html('登录成功');
 		        setTimeout(function() {$('.bk_toptips').hide();}, 2000);
 
-		        location.href = "";
+		        location.href = "{!!$return_url!!}";
 	    	},
 	    });
 	}

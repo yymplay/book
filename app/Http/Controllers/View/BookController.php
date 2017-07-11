@@ -6,11 +6,12 @@ use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\PdtContent;
 use App\Entity\PdtImages;
+use App\Entity\Cart;
 use Log;
 use Illuminate\Http\Request;
 class BookController extends Controller{
 	public function toCategory(){
-		$categorys=Category::where('parent_id',null)->get();
+		$categorys=Category::where('parent_id',null)->orderBy('category_no','desc')->get();
 		return view('category')->with('categorys',$categorys);
 		
 	}
@@ -34,15 +35,26 @@ class BookController extends Controller{
 		// }
 		//获取数量
 		$count=0;
-		$carts=$request->cookie('book_cart');
-		$cart_arr=$carts?(explode(',', $carts)):[];
-
-		foreach($cart_arr as $v){
-			$sub=strpos($v, ':');
-			if(substr($v,0,$sub)==$product_id){
-				$count=substr($v,$sub+1);
-			}
-		}
+		$member = $request->session()->get('member', '');
+    	if($member != '') {
+      		$cart_items = Cart::where('member_id', $member->id)->get();
+      		foreach ($cart_items as $cart_item) {
+        		if($cart_item->product_id == $product_id) {
+          			$count = $cart_item->count;
+          			break;
+        		}
+      		}
+    	}else{
+		   $carts=$request->cookie('book_cart');
+				$cart_arr=$carts?(explode(',', $carts)):[];
+				foreach($cart_arr as $v){
+					$sub=strpos($v, ':');
+					if(substr($v,0,$sub)==$product_id){
+						$count=substr($v,$sub+1);
+					}
+				}
+    	}
+		
 		return view('pdtcontent')->with('product',$product)
 								 ->with('pdt_content',$pdt_content)
 								 ->with('pdt_images',$pdt_images)

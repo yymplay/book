@@ -104,6 +104,9 @@
               }
         });
     }
+    function _toCart(){
+        location.href="/cart";
+    }
 </script>
 
 

@@ -22,6 +22,8 @@ Route::get('/register', 'View\MemberController@toRegister');
 Route::get('/category', 'View\BookController@toCategory');
 Route::get('/product/category_id/{category_id}', 'View\BookController@toProduct');
 Route::get('/product/{product_id}', 'View\BookController@toPdtcontent');
+Route::get('/cart','View\CartController@toCart');
+Route::get('/orderpay','View\OrderController@toPay')->middleware('check.login');
 
 
 
@@ -34,5 +36,6 @@ Route::group(['prefix' => 'service'], function () {
 	Route::post('login','Service\MemberController@login');
 	Route::post('getcategory/parent_id/{parent_id}','Service\BookController@getChildrensById');
 	Route::post('cart/add/{product_id}','Service\CartController@addCart');
+	Route::post('cart/del','Service\CartController@delCart');
 
 });
