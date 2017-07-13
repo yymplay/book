@@ -23,7 +23,10 @@ Route::get('/category', 'View\BookController@toCategory');
 Route::get('/product/category_id/{category_id}', 'View\BookController@toProduct');
 Route::get('/product/{product_id}', 'View\BookController@toPdtcontent');
 Route::get('/cart','View\CartController@toCart');
-Route::get('/orderpay','View\OrderController@toPay')->middleware('check.login');
+Route::get('/order_commit/{product_ids}','View\OrderController@toOrderCommit')->middleware('check.login');
+Route::get('/order_list','View\OrderController@toOrderList')->middleware('check.login');
+
+Route::get('/alipay','View\OrderController@toAlipay');
 
 
 
@@ -37,5 +40,7 @@ Route::group(['prefix' => 'service'], function () {
 	Route::post('getcategory/parent_id/{parent_id}','Service\BookController@getChildrensById');
 	Route::post('cart/add/{product_id}','Service\CartController@addCart');
 	Route::post('cart/del','Service\CartController@delCart');
+	Route::post('alipay','Service\PayController@alipay');
+	Route::get('return_url','Service\PayController@toReturn');
 
 });

@@ -29,10 +29,10 @@
     <div class="weui_mask_transition" id="mask"></div>
     <div class="weui_actionsheet" id="weui_actionsheet">
         <div class="weui_actionsheet_menu">
-            <div class="weui_actionsheet_cell" onclick="onMenuItemClick(1)">用户中心</div>
-            <div class="weui_actionsheet_cell" onclick="onMenuItemClick(2)">选择套餐</div>
-            <div class="weui_actionsheet_cell" onclick="onMenuItemClick(3)">周边油站</div>
-            <div class="weui_actionsheet_cell" onclick="onMenuItemClick(4)">常见问题</div>
+            <div class="weui_actionsheet_cell" onclick="onMenuItemClick(4)">主页</div>
+            <div class="weui_actionsheet_cell" onclick="onMenuItemClick(1)">书籍类别</div>
+            <div class="weui_actionsheet_cell" onclick="onMenuItemClick(2)">购物车</div>
+            <div class="weui_actionsheet_cell" onclick="onMenuItemClick(3)">我的订单</div>
         </div>
         <div class="weui_actionsheet_action">
             <div class="weui_actionsheet_cell" id="actionsheet_cancel">取消</div>
@@ -71,11 +71,11 @@ function onMenuItemClick(index) {
   var weuiActionsheet = $('#weui_actionsheet');
   hideActionSheet(weuiActionsheet, mask);
   if(index == 1) {
-  	window.location.href="http://www.baidu.com";
+  	window.location.href="/category";
   } else if(index == 2) {
-  	window.location.href="http://www.taobao.com";
+  	window.location.href="/cart";
   } else if(index == 3){
-
+    window.location.href="/order_list";
   } else {
     $('.bk_toptips').show();
     $('.bk_toptips span').html("敬请期待!");
