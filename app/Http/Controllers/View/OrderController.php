@@ -38,8 +38,6 @@ class OrderController extends Controller{
 		
 		return view('order_list')->with('orders',$orders);
 	}
-	public function toAlipay(){
-		return view('alipay');
-	}
+	
 
 }
