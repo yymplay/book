@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Models\M3Result;
-use log;
+use Log;
 
 class PayController extends Controller{
 	public function alipay(Request $request){
