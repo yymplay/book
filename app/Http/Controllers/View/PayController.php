@@ -12,7 +12,6 @@ use Log;
 class PayController extends Controller{
 	
   public function toAlipay(){
-        return 'hello';
         return view('alipay');
   }
   public function toReturn(){
