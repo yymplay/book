@@ -14,11 +14,12 @@ class PayController extends Controller{
 	
   public function toNotify(){
     log::info('支付回调来了'.json_encode($_POST));
-    require_once app_path().'/Tool/alipay/wappay/service/AlipayTradeService.php';
-    require app_path().'/Tool/alipay/config.php';
+    require_once("config.php");
+    require_once 'wappay/service/AlipayTradeService.php';
+
 
     $arr=$_POST;
-    $alipaySevice = new AlipayTradeService($config); 
+    $alipaySevice = new \AlipayTradeService($config); 
     $alipaySevice->writeLog(var_export($_POST,true));
     $result = $alipaySevice->check($arr);
 
