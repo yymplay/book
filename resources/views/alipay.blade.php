@@ -142,7 +142,7 @@
         <h1>支付宝手机网站支付接口快速通道(接口名：alipay.trade.wap.pay)</h1>
 </header>
 <div id="main">
-        <form name=alipayment action='/service/alipay' method=post target="_blank">
+        <form name=alipayment action='/service/alipay' method=post >
         {{ csrf_field() }}
             <div id="body" style="clear:left">
                 <dl class="content">

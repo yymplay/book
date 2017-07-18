@@ -10,7 +10,7 @@ $config = array (
 		'notify_url' => "http://".$_SERVER['HTTP_HOST']."/service/notify",
 		
 		//同步跳转
-		'return_url' => "http://".$_SERVER['HTTP_HOST']."/return_url",
+		'return_url' => "http://".$_SERVER['HTTP_HOST']."/order_list",
 
 		//编码格式
 		'charset' => "UTF-8",

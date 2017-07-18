@@ -145,7 +145,7 @@ $('input:checkbox[name=cart_item]').click(function(event){
             setTimeout(function() {$('.bk_toptips').hide();}, 2000);
             return;
       }
-      location.href="/order_commit/"+product_id;
+      location.href="/paypage/"+product_id;
   }
 </script>
 @endsection

@@ -5,7 +5,10 @@
 @section('content')
   <div class="page bk_content" style="top: 0;">
     <div class="weui_cells">
-    	<?php $total_price=0;?>
+    	<?php
+            $name='';
+            //var_dump($cart_items);
+      ?>
         @foreach($cart_items as $cart_item)
         <div class="weui_cell">
             <div class="weui_cell_hd">
@@ -20,7 +23,9 @@
               <span class="bk_important">{{$cart_item->count}}</span>
             </div>
         </div>
-        <?php $total_price+=$cart_item->price*$cart_item->count;?>
+        <?php 
+              $name.='['.$cart_item->name.']';
+        ?>
         @endforeach
     </div>
     <div class="weui_cells_title">支付方式</div>
@@ -29,7 +34,7 @@
             <div class="weui_cell_bd weui_cell_primary">
                 <select class="weui_select" name="payway">
                     <option selected="" value="1">支付宝</option>
-                    <option value="2">微信</option>
+                    <!-- <option value="2">微信</option> -->
                 </select>
             </div>
         </div>
@@ -37,9 +42,9 @@
 
     <form action="/service/alipay" id="alipay" method="post">
       {{ csrf_field() }}
-      <input type="hidden" name="total_price" value="" />
-      <input type="hidden" name="name" value="" />
-      <input type="hidden" name="order_no" value="" />
+      <input type="hidden" name="total_price" value="{{$total_price}}" />
+      <input type="hidden" name="name" value="{{$name}}" />
+      <input type="hidden" name="order_no" value="{{$order_no}}" />
     </form>
 
     <div class="weui_cells">
@@ -72,21 +77,7 @@
       return;
     }
 
-    $.ajax({
-      type: "POST",
-      url: '/service/wxpay',
-      dataType: 'json',
-      cache: false,
-      
-      success: function(data) {
-        if(data == null) {
-          $('.bk_toptips').show();
-          $('.bk_toptips span').html('服务端错误');
-          setTimeout(function() {$('.bk_toptips').hide();}, 2000);
-          return;
-        }
 
-      },
     
   }
 </script>

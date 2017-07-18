@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Service;
 
 use App\Entity\Member;
 use App\Entity\Category;
+use App\Entity\Order;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -50,16 +51,24 @@ class PayController extends Controller{
 
 
         if($_POST['trade_status'] == 'TRADE_FINISHED') {
+            Log::info('支付完成');
+            echo "success"; 
 
         //判断该笔订单是否在商户网站中已经做过处理
           //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
           //请务必判断请求时的total_amount与通知时获取的total_fee为一致的
           //如果有做过处理，不执行商户的业务程序
+          
             
         //注意：
         //退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
         }
         else if ($_POST['trade_status'] == 'TRADE_SUCCESS') {
+          // 修改用户的订单状态
+          Log::info('支付成功');
+          $order = Order::where('order_no', $out_trade_no)->first();
+          $order->status = 2;
+          $order->save();
         //判断该笔订单是否在商户网站中已经做过处理
           //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
           //请务必判断请求时的total_amount与通知时获取的total_fee为一致的
@@ -69,7 +78,7 @@ class PayController extends Controller{
         }
       //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
             
-      echo "success";   //请不要修改或删除
+     // echo "success";   //请不要修改或删除
         
     }else {
         //验证失败
@@ -86,24 +95,25 @@ class PayController extends Controller{
     require_once app_path().'/Tool/alipay/wappay/service/AlipayTradeService.php';
     require_once app_path().'/Tool/alipay/wappay/buildermodel/AlipayTradeWapPayContentBuilder.php';
     require app_path().'/Tool/alipay/config.php';
-    if (!empty($_POST['WIDout_trade_no'])&& trim($_POST['WIDout_trade_no'])!=""){
+    if (!empty($_POST['order_no'])&& trim($_POST['order_no'])!=""){
         //商户订单号，商户网站订单系统中唯一订单号，必填
-        $out_trade_no = $_POST['WIDout_trade_no'];
+        $order=Order::where('order_no',$_POST['order_no'])->first();
+        $out_trade_no = $_POST['order_no'];
 
         //订单名称，必填
-        $subject = $_POST['WIDsubject'];
+        $subject = $_POST['name'];
 
         //付款金额，必填
-        $total_amount = $_POST['WIDtotal_amount'];
+        $total_amount = $order->total_price;
 
         //商品描述，可空
-        $body = $_POST['WIDbody'];
+        // $body = $_POST['WIDbody'];
 
         //超时时间
         $timeout_express="1m";
 
         $payRequestBuilder = new \AlipayTradeWapPayContentBuilder();
-        $payRequestBuilder->setBody($body);
+        // $payRequestBuilder->setBody($body);
         $payRequestBuilder->setSubject($subject);
         $payRequestBuilder->setOutTradeNo($out_trade_no);
         $payRequestBuilder->setTotalAmount($total_amount);
